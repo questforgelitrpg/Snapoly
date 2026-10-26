@@ -1,0 +1,18 @@
+{
+  "id": "./",
+  "name": "Snapoly",
+  "short_name": "Snapoly",
+  "description": "Turn, choose and snap in a tactile 3D arcade puzzle.",
+  "start_url": "./?source=homescreen",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#08151e",
+  "background_color": "#08151e",
+  "lang": "en",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

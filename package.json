@@ -1,0 +1,19 @@
+{
+  "name": "snapoly",
+  "version": "0.5.0",
+  "private": true,
+  "type": "module",
+  "description": "A local, offline-ready 3D arcade puzzle prototype.",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "start": "node tools/serve.mjs",
+    "build:android": "npm run build && node tools/build-android.mjs",
+    "test": "node --test tests/rules.test.mjs"
+  },
+  "dependencies": {
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10"
+  }
+}

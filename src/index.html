@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#08151e">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Snapoly">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <meta name="description" content="Turn. Choose. Snap. An original 3D arcade puzzle.">
+  <title>Snapoly — Find your angle</title>
+  <!-- STYLES -->
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <button id="home" class="brand" aria-label="Snapoly home"><span class="brand-icon">◇</span>Snap<span>oly</span><sup>3D</sup></button>
+      <div class="edition"><span class="live-dot"></span>ARCADE PUZZLE <span class="divider">/</span> PROTOTYPE 01</div>
+      <div class="header-actions">
+        <button id="help" class="icon-btn" title="How to play" aria-label="How to play">?</button>
+        <button id="sound" class="icon-btn" title="Sound options (M)" aria-label="Sound options">♪</button>
+        <button id="pause" class="icon-btn" title="Pause (P or Escape)" aria-label="Pause game">Ⅱ</button>
+      </div>
+    </header>
+    <main>
+      <section id="arena" aria-label="3D game board. Swipe to inspect. Tap an exposed face, then Snap turns and attaches.">
+        <div class="arena-grid"></div>
+        <div id="canvas-host"></div>
+        <div class="hud">
+          <div class="score-box"><span class="eyebrow">SCORE</span><strong id="score">00000</strong><span id="combo">Find your rhythm</span></div>
+          <div class="run-info"><span id="level-label" class="eyebrow">CHAPTER 01 · THE CUBE</span><strong id="level-name">First contact</strong><span id="lives" aria-label="3 lives">◆ ◆ ◆</span></div>
+        </div>
+        <div class="lane-label lane-right" data-lane="0">01 <span>RIGHT</span></div>
+        <div class="lane-label lane-top" data-lane="1">02 <span>TOP</span></div>
+        <div class="lane-label lane-left" data-lane="2">03 <span>LEFT</span></div>
+        <div class="lane-label lane-bottom" data-lane="3">04 <span>BOTTOM</span></div>
+        <div id="floating-labels" aria-hidden="true"></div>
+        <div id="clear-reward" hidden role="status" aria-live="polite"></div>
+        <div id="toast" class="toast" role="status" aria-live="polite"></div>
+        <div class="board-footer"><span class="gesture-hint">TAP A FACE → SNAP · SWIPE TO INSPECT</span><button id="reset-view" title="Reset orientation and target" aria-label="Reset orientation and target">↻</button></div>
+        <div id="flash" aria-hidden="true"></div>
+      </section>
+      <aside class="sidebar">
+        <div class="chapter"><span class="eyebrow">THE CUBE COLLECTION</span><div><h2 id="chapter-title">First contact</h2><span id="chapter-number">01 / 04</span></div><p id="chapter-subtitle">Find your angle.</p></div>
+        <div class="progress-heading"><span id="progress-text">0 / 9 pieces</span><span id="best">BEST 0</span></div>
+        <div class="progress-track"><div id="progress-fill"></div></div>
+        <section class="incoming-section"><div class="section-title"><span class="eyebrow">INCOMING</span><span id="concurrency">1 LANE</span></div><div id="incoming-list"></div></section>
+        <div id="alignment-card" class="alignment-card"><div><span class="eyebrow">CONNECTION FACE</span><span class="square-icon">□</span></div><strong id="alignment-status">Square → square</strong><p id="alignment-detail">A perfect fit starts with an angle.</p><div class="alignment-track"><div id="alignment-fill"></div></div></div>
+        <div id="tools-row" class="tools-row"><button id="slow" aria-label="Slow time" disabled title="Slow every incoming piece for 8 seconds"><span aria-hidden="true">◷</span><strong id="slow-count">×1</strong></button><button id="bomb" aria-label="Bomb" disabled title="Remove the selected incoming piece"><span aria-hidden="true">✦</span><strong id="bomb-count">×1</strong></button></div>
+        <div id="magnet-status" hidden role="status" aria-live="polite"><strong id="magnet-state">Rotate to attract</strong><small id="magnet-angle" aria-hidden="true"></small><div class="magnet-track" aria-hidden="true"><i id="magnet-fill"></i></div></div>
+        <div class="action-row"><button id="snap" class="primary action">Snap <kbd>SPACE</kbd></button></div>
+        <div class="match-rule"><div class="color-gems"><span class="aqua">○</span><span class="rose">△</span><span class="amber">Ⅱ</span></div><div><strong id="rule-title">Three touching cubes clear.</strong><p id="rule-detail">Join three of one color by their faces. Three clear that group. Four or more clear the sculpture with a bonus.</p></div></div>
+        <div class="color-counts" id="color-counts"></div>
+        <div class="sidebar-bottom"><span>TURN. CHOOSE. SNAP.</span><button id="levels" aria-label="Choose a level">LEVELS ↗</button><button id="install" hidden>INSTALL ↗</button></div>
+      </aside>
+    </main>
+    <div id="modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div id="modal-content" class="modal-card"></div></div>
+    <div id="fatal" hidden><h1>Snapoly needs WebGL 2</h1><p>Open this file in a current Chrome, Edge, or Firefox browser with hardware acceleration enabled.</p></div>
+  </div>
+  <!-- MUSIC -->
+  <audio id="music-player" hidden></audio>
+  <!-- GAME -->
+</body>
+</html>
