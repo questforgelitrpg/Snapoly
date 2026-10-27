@@ -1,29 +1,29 @@
-# Snapoly 0.5.0 balance pass
+# Snapoly 0.5.1 balance pass
 
-This is a play-test tuning pass, not a measured final economy. The opening four levels keep the pace Nathan found playable. Tools are introduced safely before later speed steps make them more useful.
+Nathan reached Cube Master without using tools or lives. The previous curve shortened deadlines but left arrivals 2.8 seconds apart after level 4, and the final opening deadline was still 13.91 seconds. This play-test pass increases both movement and arrival pressure, places the former Master pace between Novice and Expert, and moves all six campaign colors to Expert.
 
-| Item | Before | Now |
+| Milestone | 0.5.0 Cube travel / arrivals | 0.5.1 Cube travel / arrivals |
 | --- | --- | --- |
-| First tool introduction | 1 charge | 2 charges, once per tool/profile |
-| Endless / MagnetFlow starting stock | 1 of each | 2 of each per independent run |
-| Clear coins | 5 per removed cell | 2 per removed cell |
-| Overflowing marked tool | 10 coins | 3 coins |
-| Level completion | 25 + 5 per later level, every replay | 10 + 2 per later level, first win only |
-| Slow Time price | 30 | 45 |
-| Bomb price | 35 | 55 |
-| Level 5 speed increase | 5% | 8% |
-| Levels 7, 12, 17 speed increases | 6% each | 10% each |
+| Level 5 | 18.52s / 2.80s | 17.39s / 1.74s |
+| Novice, level 10 | 16.84s / 2.80s | 15.81s / 1.58s |
+| Level 12 | 15.30s / 2.80s | 13.75s / 1.37s |
+| Expert, level 15 | 15.30s / 2.80s, four colors | 13.75s / 1.37s, six colors |
+| Master, level 20 | 13.91s / 2.80s, 46 cells | 7.04s / 0.70s, 60 cells |
 
-A simple triple pays 6 coins, before any overflow. Ignoring first-win bonuses and marked tools, replacing a Slow takes eight such clears; a Bomb takes ten. Full clears pay for every removed cell, so planning a larger clear still has economic value. Point bonuses are unchanged and separate from coins.
+The opening four stages remain tool-free. Each added side still grants more travel time, while arrivals tighten sooner. Later speed steps scale both clocks together. Expert introduces the full prism palette; post-Expert speed rises at levels 16, 18 and 20 add 25% each. Spare earning stays at one life per three clears after level 10, rather than becoming one per two at Expert. Previously earned spares, coins, tools and badges are preserved.
 
-The original wallet is preserved. Old profiles that received one introductory charge get exactly one additional charge when starting a level where that tool is available. This entitlement is recorded separately from remaining stock, capped at three, and cannot be claimed again on retries, reloads or another shape. New introductions deliver two charges. The extra entitlement is consumed even if the inventory is already full; it creates no overflow coins.
+MagnetFlow starts with all six colors, 14-second deadlines and 1.6-second arrivals (previously three colors, 22s / 3s). Endless starts at 16s / 1.8s. Continuous random speed steps remain 3–10% every 25 placements, never over 10% of the preceding speed. MagnetFlow retains one life, a checkpoint every 100 placements, and resumable high-score runs. Both old and six-color saves are supported without refilling stock or changing existing incoming timers.
 
-First-win bonuses range from 10 coins at level 1 to 48 at level 20 in each shape. Replaying can still earn clear coins, but never another completion bonus. Buying uses earned game coins only. Continuous modes keep separate run resources and do not add their coins or free tools to the campaign wallet.
+## Economy retained
 
-Next phone play-test priorities: compare levels 5-8 and 12, watch how often each tool is actually used, and whether wallet growth supports occasional replacements without making every difficult incoming cell disposable. Existing accumulated wealth will take time to spend down; this update does not remove earned coins.
+- Introductory tool grants: two charges per tool, once per profile; old one-charge introductions receive only the owed extra charge. Retries do not restore spent inventory.
+- Flow stock: two of each owned tool per independent run, held separately from campaign resources.
+- Clear coins: two per removed cell; overflowing tool rewards convert to three coins.
+- First-win bonus: 10 + 2 per later level (10 at level 1 through 48 at level 20). Replays earn clear coins but no completion bonus.
+- Slow Time: 45 coins; Bomb: 55. Shield research after Novice: 140, refill 65. Recolor research after Expert: 220, refill 80. Permanent research includes two charges. Each tool stores up to three; equip at most two.
 
-## Expanded catalog and pacing
+A simple triple pays six coins before overflow. Ignoring first-win bonuses and drops, replacing Slow takes eight triples; Bomb takes ten. Full Clears pay for every removed cell. Existing accumulated wealth is not removed.
 
-Shield research costs 140 coins after any Novice badge (10 distinct wins in one shape), with 65-coin refills. Recolor costs 220 after Expert (15 wins), with 80-coin refills. Each permanent unlock includes two charges once; stock caps at three. These are prototype tuning choices. Equip at most two tools; stored rewards cannot be used mid-run. Flow runs start with two of each owned tool and keep resources separate from the campaign.
+## Acceptance limits
 
-Every continuous mode increases its current speed randomly by 3–10% every 25 successful placements, including placements immediately cleared once. Misses and Bomb removals do not count. MagnetFlow has one life, no spare earnings, a saved break every 100 placements, and separate per-shape best scores. Shield absorbs one miss without granting a life. Saving/resuming retains spent stock.
+Automated timing checks compare the real arrival/deadline pressure and show Slow Time buying a recovery window. They do not prove human difficulty or make tool use compulsory. Next S24 play-test targets: levels 7, 12, 15, 16, 18 and 20; missed cells, actual tool use, spare consumption, six-color readability, and whether the final pace remains controllable. Measure difficulty from play rather than treating these chosen values as final balance.

@@ -36,7 +36,7 @@ fs.cpSync(path.join(root, 'android/src/res'), res, { recursive: true });
 fs.mkdirSync(path.join(res, 'drawable'), { recursive: true });
 fs.copyFileSync(path.join(root, 'public/icons/icon-512.png'), path.join(res, 'drawable/icon.png'));
 run(path.join(tools, 'aapt2.exe'), ['compile', '--dir', res, '-o', path.join(build, 'resources.zip')]);
-run(path.join(tools, 'aapt2.exe'), ['link', '-o', path.join(build, 'unsigned.apk'), '-I', platform, '--manifest', path.join(root, 'android/src/AndroidManifest.xml'), '--java', path.join(build, 'generated'), '--min-sdk-version', '26', '--target-sdk-version', '35', '--version-code', '10', '--version-name', '0.5.0', '-A', path.join(build, 'assets'), path.join(build, 'resources.zip')]);
+run(path.join(tools, 'aapt2.exe'), ['link', '-o', path.join(build, 'unsigned.apk'), '-I', platform, '--manifest', path.join(root, 'android/src/AndroidManifest.xml'), '--java', path.join(build, 'generated'), '--min-sdk-version', '26', '--target-sdk-version', '35', '--version-code', '11', '--version-name', '0.5.1', '-A', path.join(build, 'assets'), path.join(build, 'resources.zip')]);
 run(path.join(jdk, 'bin/javac.exe'), ['-J'+javaHome, '-source', '8', '-target', '8', '-bootclasspath', platform, '-d', path.join(build, 'classes'), path.join(root, 'android/src/java/com/polysnap/prototype/MainActivity.java')]);
 const classes = fs.readdirSync(path.join(build, 'classes'), { recursive: true }).filter(p => p.endsWith('.class')).map(p => path.join(build, 'classes', p));
 run(java, [javaHome, '-cp', path.join(tools, 'lib/d8.jar'), 'com.android.tools.r8.D8', '--lib', platform, '--min-api', '26', '--output', path.join(build, 'dex'), ...classes]);
@@ -44,7 +44,7 @@ run(path.join(jdk, 'bin/jar.exe'), ['--update', '--file', path.join(build, 'unsi
 run(path.join(tools, 'zipalign.exe'), ['-f', '-p', '4', path.join(build, 'unsigned.apk'), path.join(build, 'aligned.apk')]);
 const keystore = path.join(keys, 'polysnap-test.jks');
 if (!fs.existsSync(keystore)) run(path.join(jdk, 'bin/keytool.exe'), ['-J'+javaHome, '-genkeypair', '-keystore', keystore, '-storepass:env', 'POLYSNAP_KEYSTORE_PASS', '-keypass:env', 'POLYSNAP_KEYSTORE_PASS', '-alias', 'polysnap-test', '-keyalg', 'RSA', '-keysize', '2048', '-validity', '10000', '-dname', 'CN=Snapoly Test, O=Snapoly Prototype, C=US']);
-const apk = path.join(build, 'Snapoly-0.5.0-debug.apk');
+const apk = path.join(build, 'Snapoly-0.5.1-debug.apk');
 run(java, [javaHome, '-jar', path.join(tools, 'lib/apksigner.jar'), 'sign', '--ks', keystore, '--ks-key-alias', 'polysnap-test', '--ks-pass', 'env:POLYSNAP_KEYSTORE_PASS', '--key-pass', 'env:POLYSNAP_KEYSTORE_PASS', '--out', apk, path.join(build, 'aligned.apk')]);
 run(java, [javaHome, '-jar', path.join(tools, 'lib/apksigner.jar'), 'verify', '--verbose', apk]);
 run(path.join(tools, 'aapt2.exe'), ['dump', 'badging', apk]);

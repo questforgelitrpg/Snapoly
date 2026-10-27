@@ -1,4 +1,4 @@
-import {Game,SHAPES,squareFace} from './rules.js';
+import {Game,SHAPES,squareFace,COLORS} from './rules.js';
 import {TOOL_IDS,BASE_TOOLS} from './tool-catalog.js';
 
 const counters=['score','combo','maxCombo','resolved','snaps','misses','clears','spawned','nextId','laneCursor','bombs','coinsEarned','shieldDeflections'];
@@ -32,7 +32,7 @@ export function restoreMagnet(snapshot,random=Math.random){
     if(!Array.isArray(s.blocks)||s.blocks.length<1||s.blocks.length>4000||!Array.isArray(s.incoming)||s.incoming.length>4)return null;
     const ids=new Set();
     for(const b of s.blocks){
-      if(!count(b.id)||ids.has(b.id)||!vector(b.position)||!Number.isInteger(b.color)||b.color<(b.id===0?-1:0)||b.color>2)return null;
+      if(!count(b.id)||ids.has(b.id)||!vector(b.position)||!Number.isInteger(b.color)||b.color<(b.id===0?-1:0)||b.color>=COLORS.length)return null;
       ids.add(b.id);
       if(b.drop!=null&&!snapshot.available.includes(b.drop))return null;
       if(snapshot.shape!=='cube'&&(b.shape!==snapshot.shape||!Array.isArray(b.vertices)||b.vertices.length!==SHAPES[snapshot.shape].vertices.length||!b.vertices.every(v=>vector(v))))return null;
@@ -40,7 +40,7 @@ export function restoreMagnet(snapshot,random=Math.random){
     if(!s.blocks.some(b=>b.id===0&&b.color===-1))return null;
     const lanes=new Set();
     for(const p of s.incoming){
-      if(!count(p.id)||ids.has(p.id)||!Number.isInteger(p.lane)||p.lane<0||p.lane>3||lanes.has(p.lane)||!Number.isInteger(p.color)||p.color<0||p.color>2||p.shape!==snapshot.shape||!finite(p.duration,.01,30)||!finite(p.remaining,-100,p.duration)||p.drop!=null&&!snapshot.available.includes(p.drop))return null;
+      if(!count(p.id)||ids.has(p.id)||!Number.isInteger(p.lane)||p.lane<0||p.lane>3||lanes.has(p.lane)||!Number.isInteger(p.color)||p.color<0||p.color>=COLORS.length||p.shape!==snapshot.shape||!finite(p.duration,.01,30)||!finite(p.remaining,-100,p.duration)||p.drop!=null&&!snapshot.available.includes(p.drop))return null;
       lanes.add(p.lane);ids.add(p.id);
     }
     if(s.nextId<=Math.max(...ids)||s.snaps>s.resolved||s.resolved>s.spawned)return null;

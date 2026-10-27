@@ -15,52 +15,57 @@ export const COLORS = [
 export const CHAPTERS=Object.values(SHAPES).map(({id:shape,name,symbol})=>({shape,name,symbol}));
 export const LEVELS_PER_SHAPE=20,MAX_LIFE_POOL=5,GROWTH_TARGET=100;
 const STARTERS=[
-  {name:'First contact',lanes:[0],concurrent:1,travel:14,interval:1.5,total:9,gold:2500},
-  {name:'Cross current',lanes:[0,2],concurrent:2,travel:16,interval:3.6,total:12,gold:4000},
-  {name:'Triple threat',lanes:[0,1,3],concurrent:3,travel:18,interval:3.1,total:15,gold:5800},
-  {name:'Four fronts',lanes:[0,1,2,3],concurrent:4,travel:20,interval:2.8,total:20,gold:8500}
+  {name:'First contact',lanes:[0],concurrent:1,travel:13,interval:1.5,total:9,gold:2500},
+  {name:'Cross current',lanes:[0,2],concurrent:2,travel:15,interval:2.8,total:12,gold:4000},
+  {name:'Triple threat',lanes:[0,1,3],concurrent:3,travel:17,interval:2.3,total:15,gold:5800},
+  {name:'Four fronts',lanes:[0,1,2,3],concurrent:4,travel:20,interval:2,total:20,gold:8500}
 ];
+// One-based level numbers. A speed step tightens both the deadline and cadence.
+export const CAMPAIGN_SPEED_STEPS=Object.freeze({5:15,7:10,12:15,16:25,18:25,20:25});
+export const FLOW_STARTS=Object.freeze({
+  endless:Object.freeze({travel:16,interval:1.8,colorCount:3}),
+  magnet:Object.freeze({travel:14,interval:1.6,colorCount:COLORS.length})
+});
 const CHANGES=[
   ['sides','First contact','One incoming side. Tap a face, then Snap.','→'],
   ['sides','Two sides','Choose between two incoming cells.','↔'],
-  ['sides','Three sides','A third side joins. Take your time.','↗'],
-  ['sides','Four sides','All four sides. Each cell travels more slowly.','✥'],
-  ['tool','Speed up + Slow Time','24 cells, 8% faster. First unlock: 2 Slow charges.','◷'],
-  ['cells','More cells','28 cells to resolve. Keep making room.','◇'],
-  ['speed','Speed up','Incoming cells move 10% faster. Tools can help now.','»'],
+  ['sides','Three sides','A third side joins. Watch the next arrival.','↗'],
+  ['sides','Four sides','Four sides, with more time per cell. Keep a steady rhythm.','✥'],
+  ['tool','Speed up + Slow Time','24 cells. Movement and arrivals are 15% faster. First unlock: 2 Slow charges.','◷'],
+  ['cells','More cells','30 cells to resolve. Keep making room.','◇'],
+  ['speed','Speed up','Movement and arrivals are another 10% faster.','»'],
   ['tool','Bomb unlocked','First unlock: 2 Bombs. Remove a selected incoming cell.','✦'],
-  ['cells','A longer run','32 cells. Build, match and clear.','◇'],
+  ['cells','A longer run','36 cells. Build, match and clear.','◇'],
   ['lives','Earn spare lives','Every 3 match clears earns a spare. Hold up to 5.','♥'],
   ['colors','Violet joins','A fourth color, with its own diamond symbol.','◇'],
-  ['speed','Speed up','Incoming cells move another 10% faster.','»'],
-  ['cells','More to fit','38 cells. Plan your next connection.','◇'],
-  ['tool','More tool drops','Marked cells now appear more often: 22%.','✦'],
-  ['lives','Stronger life pool','Now earn a spare life every 2 match clears.','♥'],
+  ['speed','Speed up','Movement and arrivals are another 15% faster. Plan quick color clears.','»'],
   ['colors','Sapphire joins','Five colors. Follow color and symbol together.','≈'],
-  ['speed','Speed up','Another 10% faster. Keep your rhythm.','»'],
-  ['cells','The long game','46 cells. Make every connection count.','◇'],
+  ['cells','More to fit','48 cells. Plan your next connection.','◇'],
+  ['colors','Full prism palette','Lime joins. All six colors are in play for Expert.','+'],
+  ['speed','Beyond Expert','Movement and arrivals are 25% faster. Choose your tools before Play.','»'],
+  ['cells','The long game','60 cells. Make every connection count.','◇'],
+  ['speed','Speed up','Another 25% faster. Keep room for all six colors.','»'],
   ['tool','Tool bonus','28% of random cells now carry a tool.','✦'],
-  ['colors','Master palette','Lime joins: six colors for your final challenge.','+']
+  ['speed','Master tempo','Another 25% faster. Six colors, four sides, 60 cells.','»']
 ];
 export const LEVELS=CHAPTERS.flatMap((chapter,chapterIndex)=>{
-  let travel=20+(chapterIndex?2:0),total=20,toolTypes=[],dropRate=0,colorCount=3,clearsPerLife=0;
+  let travel=20+(chapterIndex?2:0),interval=2,total=20,toolTypes=[],dropRate=0,colorCount=3,clearsPerLife=0;
   return CHANGES.map(([change,title,description,icon],stage)=>{
-    if(stage===4){travel/=1.08;total=24;toolTypes=['slow'];dropRate=.12;}
-    if(stage===5)total=28;
-    if([6,11,16].includes(stage))travel/=1.10;
+    const speed=CAMPAIGN_SPEED_STEPS[stage+1];
+    if(speed){travel/=1+speed/100;interval/=1+speed/100;}
+    if(stage===4){total=24;toolTypes=['slow'];dropRate=.12;}
+    if(stage===5)total=30;
     if(stage===7){toolTypes=['slow','bomb'];dropRate=.16;}
-    if(stage===8)total=32;
+    if(stage===8)total=36;
     if(stage===9)clearsPerLife=3;
     if(stage===10)colorCount=4;
-    if(stage===12)total=38;
-    if(stage===13)dropRate=.22;
-    if(stage===14)clearsPerLife=2;
-    if(stage===15)colorCount=5;
-    if(stage===17)total=46;
+    if(stage===12)colorCount=5;
+    if(stage===13)total=48;
+    if(stage===14)colorCount=COLORS.length;
+    if(stage===16)total=60;
     if(stage===18)dropRate=.28;
-    if(stage===19)colorCount=6;
     const starter=STARTERS[stage];
-    return {...(starter||{lanes:[0,1,2,3],concurrent:4,interval:2.8,total,travel,gold:Math.round(total*350)}),
+    return {...(starter||{lanes:[0,1,2,3],concurrent:4,interval,total,travel,gold:Math.round(total*350)}),
       ...(starter?{travel:starter.travel+(chapterIndex?2:0)}:{}),name:starter?.name||title,subtitle:description,
       shape:chapter.shape,chapter:chapterIndex,stage,toolTypes:[...toolTypes],dropRate,colorCount,clearsPerLife,
       briefing:{change,title,description,icon},grantTool:stage===4?'slow':stage===7?'bomb':null};
@@ -185,7 +190,7 @@ export class Game {
     this.completed = options.completed===true;
     this.config = mode === 'growth'
       ? {name:'Growth lab',shape:'cube',chapter:0,stage:0,lanes:[0,1,2,3],concurrent:1,travel:18,interval:.8,total:Infinity,gold:Infinity,toolTypes:[],dropRate:0,colorCount:3,clearsPerLife:0}
-      : isFlowMode(mode)?{name:mode==='magnet'?'MagnetFlow':'Endless flow',shape:Object.hasOwn(SHAPES,options.shape)?options.shape:'cube',chapter:0,stage:0,lanes:[0,1,2,3],concurrent:4,travel:22,interval:3,total:Infinity,gold:Infinity,toolTypes:['slow','bomb'],dropRate:.22,colorCount:3,clearsPerLife:3}
+      : isFlowMode(mode)?{name:mode==='magnet'?'MagnetFlow':'Endless flow',shape:Object.hasOwn(SHAPES,options.shape)?options.shape:'cube',chapter:0,stage:0,lanes:[0,1,2,3],concurrent:4,...FLOW_STARTS[mode],total:Infinity,gold:Infinity,toolTypes:['slow','bomb'],dropRate:.22,clearsPerLife:3}
       : LEVELS[level];
     if(!this.config)throw new Error('Unknown level.');
     this.config={...this.config,toolTypes:[...this.config.toolTypes]};

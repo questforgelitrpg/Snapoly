@@ -1,4 +1,4 @@
-const CACHE = 'polysnap-mobile-v13-snapoly-save';
+const CACHE = 'polysnap-mobile-v14-snapoly-tempo';
 const BASE=new URL('./',self.location).pathname;
 const ASSETS = ['/', '/manifest.webmanifest', '/icons/icon-180.png', '/icons/icon-192.png', '/icons/icon-512.png', '/music/controlled-groove.mp3', '/music/digital-arpeggio.mp3'].map(p=>BASE+p.slice(1));
 self.addEventListener('install', event => {

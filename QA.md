@@ -1,4 +1,16 @@
-# Snapoly 0.5.0 validation — 26 October 2026
+# Snapoly 0.5.1 validation — 27 October 2026
+
+66 automated checks pass. New checks place the former Cube Master deadline near level 12, require all six colors by Expert (15), scale both deadline and spawn clocks at each speed step, and verify a 60-cell Master finish at about 7-second travel / 0.7-second arrivals. A no-input timing check loses three lives at Master within 10 seconds, while Slow Time buys a window with no missed deadline. This demonstrates clock pressure and tool effect, not human difficulty acceptance.
+
+Six-color MagnetFlow save round trips pass for all five shapes, including attached high-index colors and incoming Lime. Out-of-range colors are rejected. Legacy three-color snapshots keep their current incoming timers, score and spent stock; future spawns use the six-color configuration. Existing campaign record indexes, badges, coins and stocks remain intact. Campaign spare earning stays at three clears from level 10 through Master.
+
+At 390×844 in a real browser, the isolated unlocked UI fixture shows level 12 at 13.7s, level 15 with six colors, and the level-20 Master speed splash with 60 cells / six colors / 7.0s. Its Play button stays visible. MagnetFlow's menu and briefing state all six colors. The actual Recolor panel offers six choices; changing Amber to Lime spends one charge. Pause → Save & exit → full reload → Resume restores that Lime incoming cell, Rose on the second lane, one life, 1.00× speed and one remaining Recolor charge, paused until resumed. No browser warning/error logs appeared. Fixture progression exists only in work/tempo-preview.mjs, outside shipped source, archives and APKs; it grants no real player progress.
+
+The Android 0.5.1 build has version code 11, the same app ID and signing certificate as 0.5.0, and verified v2/v3 signatures. It was installed with update-in-place on the connected Galaxy S24, without uninstall or data clearing. The phone renders the 0.5.1 welcome screen. The APK's embedded HTML exactly matches the tested standalone output with only the native-head adaptation. The itch.io ZIP's index matches the tested dist build and includes both tracks. Offline artifacts have no analytics; the hosted web game has one Vercel loader.
+
+Human acceptance remains open for the revised late-level balance, tool consumption and sustained S24 performance. Physical iPhone testing and native store releases remain outside this prototype validation. See the 0.5.1 release receipt for live publication and downloadable checksums.
+
+## Historical 0.5.0 validation — 26 October 2026
 
 62 automated checks pass. Coverage includes all 100 campaign levels completing with three stars; five real polyhedra; exact face attachments, overlap rejection, multi-face junctions, touching-only triples, four-plus full clears, collision-free settling, migration, coin economy, badges, music and offline media ranges.
 

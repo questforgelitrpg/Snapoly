@@ -1,4 +1,4 @@
-Snapoly prototype 0.5.0
+Snapoly prototype 0.5.1
 
 Background music supplied by Nathan: Controlled Groove; Digital Arpeggio.
 See public/music/README.txt for provenance. No additional license is inferred.

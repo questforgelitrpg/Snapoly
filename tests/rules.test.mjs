@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { Game, exposedFaces, sameFace, squareFace, LEVELS, ALIGNMENT_COS, touchingBlocks, connectedColorGroup, settleBlocks, CLEAR_HOLD, NORMALS, fitsFace, CHAPTERS, chapterUnlocked, SLOW_SECONDS, SLOW_FACTOR, TOOL_CAP, SHOP_PRICES, purchaseTool, COLORS, levelUnlocked, chapterBadges, MAX_LIFE_POOL, flowShapeUnlocked, magnetUnlocked, isFlowMode } from '../src/rules.js';
+import { Game, exposedFaces, sameFace, squareFace, LEVELS, ALIGNMENT_COS, touchingBlocks, connectedColorGroup, settleBlocks, CLEAR_HOLD, NORMALS, fitsFace, CHAPTERS, chapterUnlocked, SLOW_SECONDS, SLOW_FACTOR, TOOL_CAP, SHOP_PRICES, purchaseTool, COLORS, levelUnlocked, chapterBadges, MAX_LIFE_POOL, flowShapeUnlocked, magnetUnlocked, isFlowMode, CAMPAIGN_SPEED_STEPS } from '../src/rules.js';
 import {Quaternion,Euler,Vector3} from 'three';
 import {MagnetLatch,MAGNET_ANGLE,MAGNET_COS,MAGNET_START_EULER,withinMagnetCatch,magnetRotation} from '../src/magnet.js';
 import {loadProfile,grantToolIntroductions} from '../src/profile.js';
@@ -404,14 +404,14 @@ test('natural arrivals are reported for the renderer to resolve once against cur
   assert.equal(game.snaps,1);assert.equal(game.incoming.length,0);assert.equal(game.score,100);
 });
 
-test('three 20-level chapters keep the four-side shape unlock and sequential levels',()=>{
+test('five 20-level chapters keep the four-side shape unlock and sequential levels',()=>{
   assert.equal(LEVELS.length,100);assert.equal(CHAPTERS.length,5);
   const records=[];assert.equal(chapterUnlocked(0,records),true);assert.equal(levelUnlocked(0,records),true);assert.equal(levelUnlocked(1,records),false);
   assert.equal(chapterUnlocked(1,records),false);records[3]={stars:1};assert.equal(chapterUnlocked(1,records),true);
   assert.equal(levelUnlocked(4,records),true);assert.equal(chapterUnlocked(2,records),false);records[23]={stars:2};assert.equal(chapterUnlocked(2,records),true);
   assert.equal(chapterUnlocked(3,records),false);assert.equal(chapterUnlocked(undefined,records),false);
   for(let chapter=0;chapter<CHAPTERS.length;chapter++){assert.ok(LEVELS.slice(chapter*20,chapter*20+20).every(l=>l.shape===CHAPTERS[chapter].shape));}
-  assert.deepEqual(LEVELS.slice(0,4).map(l=>l.travel),[14,16,18,20]);assert.ok(LEVELS[3].travel>7.5*2);
+  assert.deepEqual(LEVELS.slice(0,4).map(l=>l.travel),[13,15,17,20]);assert.ok(LEVELS[3].travel>7.5*2);
 });
 
 test('Slow Time scales only incoming/spawn clocks and handles its expiry exactly',()=>{
@@ -509,22 +509,82 @@ test('generated Pyramid and Diamond sculptures retain every survivor and avoid s
 });
 
 
-test('campaign introduces one category per later level and retains the beginner pacing',()=>{
+test('campaign introduces one category per later level, tightens both speed clocks and reaches all six colors at Expert',()=>{
   for(let chapter=0;chapter<CHAPTERS.length;chapter++){
     const levels=LEVELS.slice(chapter*20,chapter*20+20);
     for(const cfg of levels.slice(0,4)){assert.deepEqual(cfg.toolTypes,[]);assert.equal(cfg.dropRate,0);assert.equal(cfg.colorCount,3);assert.equal(cfg.clearsPerLife,0);}
-    assert.deepEqual(levels[4].toolTypes,['slow']);assert.equal(levels[4].total,24);assert.ok(Math.abs(levels[3].travel/levels[4].travel-1.08)<1e-10);
-    for(const stage of [6,11,16])assert.ok(Math.abs(levels[stage-1].travel/levels[stage].travel-1.10)<1e-10);
-    assert.deepEqual(levels[7].toolTypes,['slow','bomb']);assert.equal(levels[9].clearsPerLife,3);assert.equal(levels[14].clearsPerLife,2);
-    assert.equal(levels[10].colorCount,4);assert.equal(levels[15].colorCount,5);assert.equal(levels[19].colorCount,6);
+    assert.deepEqual(levels[4].toolTypes,['slow']);assert.equal(levels[4].total,24);
+    for(const [level,percent] of Object.entries(CAMPAIGN_SPEED_STEPS)){
+      const stage=Number(level)-1,factor=1+percent/100;
+      assert.ok(Math.abs(levels[stage-1].travel/levels[stage].travel-factor)<1e-10);
+      assert.ok(Math.abs(levels[stage-1].interval/levels[stage].interval-factor)<1e-10);
+    }
+    assert.deepEqual(levels[7].toolTypes,['slow','bomb']);assert.equal(levels[9].clearsPerLife,3);assert.equal(levels[19].clearsPerLife,3);
+    assert.equal(levels[10].colorCount,4);assert.equal(levels[12].colorCount,5);
+    assert.equal(levels[14].colorCount,6);assert.ok(levels.slice(14).every(l=>l.colorCount===6));
     for(let i=5;i<20;i++){
       const prev=levels[i-1],cfg=levels[i];
-      const changes=[cfg.travel!==prev.travel,cfg.total!==prev.total,JSON.stringify(cfg.toolTypes)!==JSON.stringify(prev.toolTypes)||cfg.dropRate!==prev.dropRate,cfg.colorCount!==prev.colorCount,cfg.clearsPerLife!==prev.clearsPerLife];
+      const changes=[cfg.travel!==prev.travel||cfg.interval!==prev.interval,cfg.total!==prev.total,JSON.stringify(cfg.toolTypes)!==JSON.stringify(prev.toolTypes)||cfg.dropRate!==prev.dropRate,cfg.colorCount!==prev.colorCount,cfg.clearsPerLife!==prev.clearsPerLife];
       assert.equal(changes.filter(Boolean).length,1,`one category at level ${i+1}`);
       assert.ok(cfg.briefing.title&&cfg.briefing.description&&cfg.briefing.icon);
     }
   }
   assert.equal(new Set(COLORS.map(c=>c.hex)).size,6);assert.equal(new Set(COLORS.map(c=>c.symbol)).size,6);
+});
+
+test('the former Cube Master pace sits between Novice and Expert, with a substantially harder Master finish',()=>{
+  const oldMaster=20/(1.08*1.1**3),cube=LEVELS.slice(0,20);
+  assert.ok(cube[9].travel>oldMaster);
+  assert.ok(Math.abs(cube[11].travel/oldMaster-1)<.03);
+  assert.ok(cube[14].travel<oldMaster);
+  assert.ok(cube[19].travel<oldMaster*.55);assert.ok(cube[19].interval<.75);
+  assert.equal(cube[19].total,60);assert.equal(cube[19].colorCount,6);
+  for(let i=4;i<20;i++)assert.ok(cube[i].travel<=cube[i-1].travel&&cube[i].interval<=cube[i-1].interval);
+});
+
+test('Master creates real four-lane deadline pressure and Slow Time buys a recovery window',()=>{
+  function wait(index,slow=false){
+    const game=new Game(index,'classic',()=>.9,{slow:2,bomb:2});game.tick(0);
+    if(slow)assert.equal(game.useSlow(),true);
+    for(let n=0;n<100;n++)for(const id of game.tick(.1))game.miss(id);
+    return game;
+  }
+  assert.equal(wait(11).misses,0);
+  const master=wait(19);assert.equal(master.status,'lost');assert.equal(master.misses,3);
+  const slowed=wait(19,true);assert.equal(slowed.status,'playing');assert.equal(slowed.misses,0);assert.equal(slowed.tools.slow,1);
+});
+
+test('MagnetFlow starts every shape with the full six-color palette and faster arrivals',()=>{
+  for(const shape of Object.keys(SHAPES)){
+    const colors=new Set();
+    for(let color=0;color<COLORS.length;color++){
+      const game=new Game(0,'magnet',()=>(color+.5)/COLORS.length,null,{shape});game.spawn();
+      assert.equal(game.config.colorCount,COLORS.length);colors.add(game.incoming[0].color);
+      assert.ok(game.config.travel<22);assert.ok(game.config.interval<3);
+    }
+    assert.equal(colors.size,COLORS.length);
+  }
+});
+
+test('six-color Magnet saves round-trip and legacy three-color runs keep clocks, stock and score',()=>{
+  for(const shape of Object.keys(SHAPES)){
+    const game=new Game(0,'magnet',()=>.99,{slow:1,bomb:0},{shape});
+    for(let color=3;color<COLORS.length;color++)snapNext(game,color);
+    game.spawn();game.tick(.3);
+    const snapshot=captureMagnet(game,[0,0,0,1],game.incoming[0].id);
+    assert.ok(snapshot.state.blocks.some(b=>b.color===5));
+    const restored=restoreMagnet(snapshot);assert.ok(restored,shape);
+    const round=captureMagnet(restored.game,restored.rotation,restored.selectedId);round.savedAt=snapshot.savedAt;assert.deepEqual(round,snapshot);
+    for(const badColor of [-1,COLORS.length]){
+      const invalid=structuredClone(snapshot);invalid.state.incoming[0].color=badColor;assert.equal(restoreMagnet(invalid),null);
+      const badBlock=structuredClone(snapshot);badBlock.state.blocks[1].color=badColor;assert.equal(restoreMagnet(badBlock),null);
+    }
+    const legacy=structuredClone(snapshot);
+    legacy.state.blocks.filter(b=>b.id!==0).forEach(b=>b.color%=3);
+    legacy.state.incoming.forEach(p=>{p.color%=3;p.duration=22;p.remaining=17.5;});
+    const migrated=restoreMagnet(legacy);assert.ok(migrated);assert.equal(migrated.game.config.colorCount,6);
+    assert.deepEqual(migrated.game.incoming,legacy.state.incoming);assert.equal(migrated.game.score,game.score);assert.deepEqual(migrated.game.tools,game.tools);
+  }
 });
 
 test('starter levels withhold tools and drops even when saved stock exists',()=>{
@@ -555,13 +615,14 @@ test('badges count distinct wins independently for every shape and survive repla
   records[0]={stars:3};assert.equal(chapterBadges(0,records).filter(b=>b.earned).length,4);
 });
 
-test('three match clears earn a spare at level 10; level 15 needs two, caps at five and carries progress',()=>{
+test('three match clears earn a spare from level 10 through Master, cap at five and carry progress',()=>{
   const game=new Game(9,'classic',()=>.9,null,{lifePool:0,lifeProgress:0});
   for(let n=0;n<8;n++)snapNext(game,Math.floor(n/3)%3);assert.equal(game.lifePool,0);snapNext(game,2);
   assert.equal(game.lifePool,1);assert.equal(game.lifeProgress,0);assert.equal(game.drainEvents().filter(e=>e.type==='life-earned').length,1);
   const saved=new Game(14,'classic',()=>.9,null,{lifePool:4,lifeProgress:1});
-  for(let n=0;n<3;n++)snapNext(saved,0);assert.equal(saved.lifePool,5);assert.equal(saved.lifeProgress,0);
-  for(let n=0;n<6;n++)snapNext(saved,1);assert.equal(saved.lifePool,5);assert.equal(saved.lifeProgress,0);
+  for(let n=0;n<3;n++)snapNext(saved,0);assert.equal(saved.lifePool,4);assert.equal(saved.lifeProgress,2);
+  for(let n=0;n<3;n++)snapNext(saved,1);assert.equal(saved.lifePool,5);assert.equal(saved.lifeProgress,0);
+  for(let n=0;n<9;n++)snapNext(saved,2);assert.equal(saved.lifePool,5);assert.equal(saved.lifeProgress,0);
   const early=new Game(8,'classic',()=>.9,null,{lifePool:3,lifeProgress:2});for(let n=0;n<3;n++)snapNext(early,0);
   assert.equal(early.lifePool,3);assert.equal(early.lifeProgress,2);assert.equal(early.config.clearsPerLife,0);
 });

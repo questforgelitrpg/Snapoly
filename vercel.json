@@ -7,6 +7,6 @@
     {"source":"/(.*)","headers":[{"key":"X-Content-Type-Options","value":"nosniff"},{"key":"Referrer-Policy","value":"strict-origin-when-cross-origin"}]},
     {"source":"/play/sw.js","headers":[{"key":"Cache-Control","value":"no-cache"}]},
     {"source":"/play/manifest.webmanifest","headers":[{"key":"Content-Type","value":"application/manifest+json"}]},
-    {"source":"/downloads/(.*).apk","headers":[{"key":"Content-Type","value":"application/vnd.android.package-archive"},{"key":"Content-Disposition","value":"attachment; filename=Snapoly-0.5.0-android.apk"}]}
+    {"source":"/downloads/(.*).apk","headers":[{"key":"Content-Type","value":"application/vnd.android.package-archive"},{"key":"Content-Disposition","value":"attachment"}]}
   ]
 }

@@ -1,4 +1,4 @@
-# Snapoly 0.5.0
+# Snapoly 0.5.1
 
 Touch-first 3D arcade puzzle for Android, iPhone and the browser. Swipe to rotate, tap an exposed face, then Snap. Three face-connected cells of one color clear that group; four or more trigger Full Clear, keeping the core and awarding a bonus. Original procedural art, glass chimes, particle effects and smooth settling.
 
@@ -14,6 +14,8 @@ Node.js 20 or newer. Runtime: Three.js 0.180.0. Build tool: esbuild 0.25.10. No 
 
 ## This version
 
+- Rebalanced campaign speed affects both deadlines and arrivals. The former Cube Master pace is near level 12; all six colors join by Expert at level 15. Levels 16, 18 and 20 then speed up another 25% each, finishing at 60 cells with roughly 7-second deadlines and 0.7-second arrivals. Existing earned progress is retained.
+- MagnetFlow starts with all six colors and a faster 14s / 1.6s rhythm; six-color and legacy saves resume safely. Endless starts at 16s / 1.8s. Campaign spares require three match clears from level 10 onward.
 - Cube, Pyramid, Diamond, Hexagonal Prism and Dodecahedron: 20 levels each, preserving the first 60 level indexes and all existing progress. New chapters use real polygon faces and collision geometry.
 - Every continuous mode gains a random **3–10% of its current speed every 25 successful placements**. A cleared placement counts once; misses and Bomb removals do not advance speed. The HUD announces each step.
 - Shield protects one miss; Recolor changes the selected incoming cell to a chosen available color. Permanent research and refills use existing coins. The shop displays all four tools. Equip at most two before Play; other stock stays in storage.
