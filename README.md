@@ -10,7 +10,7 @@ Touch-first 3D arcade puzzle for Android, iPhone and the browser. Swipe to rotat
 - iPhone/iPad: open the hosted web game in Safari, Share → Add to Home Screen. This is a PWA; no native IPA or App Store listing is included.
 - Vercel: vercel.json builds the download website into website/. Its web game is at /play/. The Android APK in site/downloads is included in the website build. Run npm run build and node tools/build-site.mjs to reproduce it.
 
-Node.js 20 or newer. Runtime: Three.js 0.180.0. Build tool: esbuild 0.25.10. No game server, account, API key or paid service is required to play.
+Node.js 20 or newer. Runtime: Three.js 0.180.0. Build tool: esbuild 0.25.10. No game server, account, API key or paid service is required to play. The hosted website and web game include Vercel Web Analytics for aggregate visitor/page-view statistics; offline builds do not.
 
 ## This version
 
@@ -36,3 +36,5 @@ Music starts after a gesture at no more than 20%, with independent music/effects
 DESIGN_GUIDE.md consolidates the established concept, current rules and expansion ideas. LEVELS.md describes progression; BALANCE.md lists the tunable economy; QA.md records verification and limits.
 
 Website: https://snapoly.net · Source: https://github.com/questforgelitrpg/Snapoly · Contact: snapolygame@gmail.com
+
+Website support link: https://ko-fi.com/natescoffeesupply. It is optional and separate from game coins or tools.
