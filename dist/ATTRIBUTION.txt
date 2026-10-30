@@ -11,7 +11,7 @@ is provided as-is, subject to the license's disclaimer of warranties and
 limitation of liability.
 
 Suggested credit:
-"Snapoly by Nathan Hudson and Snapoly contributors — https://snapoly.net/ —
+"Snapoly by Nathan Hudson and Snapoly contributors - https://snapoly.net/ -
 licensed under CC BY 4.0: https://creativecommons.org/licenses/by/4.0/"
 
 When sharing a modified version, indicate the changes and retain previous

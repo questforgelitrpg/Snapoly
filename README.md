@@ -45,7 +45,7 @@ Website support link: https://ko-fi.com/natescoffeesupply. It is optional and se
 
 Original Snapoly project code, documentation, procedural graphics and synthesized sound are licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). See [LICENSE](LICENSE) for the complete terms and [ATTRIBUTION.txt](ATTRIBUTION.txt) for scope and a copy-ready credit:
 
-> Snapoly by Nathan Hudson and Snapoly contributors — https://snapoly.net/ — licensed under CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+> Snapoly by Nathan Hudson and Snapoly contributors - https://snapoly.net/ - licensed under CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
 
 When sharing, give appropriate credit, include the license link and indicate modifications. The license includes a disclaimer of warranties and limitation of liability. Third-party dependencies retain their own licenses, including the Three.js MIT notice in [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt). The supplied background recordings are excluded from this grant; their provenance remains in [public/music/README.txt](public/music/README.txt).
 
