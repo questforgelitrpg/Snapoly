@@ -1,0 +1,34 @@
+Snapoly
+Copyright (c) 2026 Snapoly contributors. Created for Nathan Hudson.
+
+The original Snapoly project code, documentation, procedural graphics and
+synthesized sound are licensed under Creative Commons Attribution 4.0
+International (CC BY 4.0), except for the material identified below.
+
+https://creativecommons.org/licenses/by/4.0/
+The complete, unmodified license text is supplied in LICENSE. The material
+is provided as-is, subject to the license's disclaimer of warranties and
+limitation of liability.
+
+Suggested credit:
+"Snapoly by Nathan Hudson and Snapoly contributors — https://snapoly.net/ —
+licensed under CC BY 4.0: https://creativecommons.org/licenses/by/4.0/"
+
+When sharing a modified version, indicate the changes and retain previous
+change notices. Credit must not imply endorsement. See LICENSE for the
+complete terms; this notice does not add conditions to that license.
+
+Source: https://github.com/questforgelitrpg/Snapoly
+Contact: snapolygame@gmail.com
+
+Exceptions:
+- Three.js and other dependencies retain their own licenses. The bundled
+  Three.js MIT license is reproduced in THIRD_PARTY_NOTICES.txt.
+- The supplied recordings Controlled Groove and Digital Arpeggio are not
+  covered by Snapoly's CC BY 4.0 grant. See public/music/README.txt in the
+  source, or music/README.txt in the browser distribution. No additional
+  reuse license is granted for these recordings by the project license.
+
+License change: 29 October 2026. Earlier versions distributed under MIT
+retain their original terms; this change does not revoke permissions
+already granted for those versions.

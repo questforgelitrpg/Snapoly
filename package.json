@@ -2,6 +2,7 @@
   "name": "snapoly",
   "version": "0.5.1",
   "private": true,
+  "license": "CC-BY-4.0",
   "type": "module",
   "description": "A local, offline-ready 3D arcade puzzle prototype.",
   "scripts": {

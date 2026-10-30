@@ -1,7 +1,14 @@
 Snapoly prototype 0.5.1
 
+Original Snapoly material: CC BY 4.0. Credit Nathan Hudson and Snapoly
+contributors; see ATTRIBUTION.txt and LICENSE for scope and full terms.
+https://snapoly.net/
+https://creativecommons.org/licenses/by/4.0/
+
 Background music supplied by Nathan: Controlled Groove; Digital Arpeggio.
-See public/music/README.txt for provenance. No additional license is inferred.
+These recordings are excluded from the project's CC BY 4.0 license.
+See public/music/README.txt (source) or music/README.txt (browser package)
+for provenance. No additional license is inferred.
 Original game code, procedural geometry, graphics and synthesized audio: created for Nathan, 2026.
 No assets from Candy Crush or Bejeweled are included.
 

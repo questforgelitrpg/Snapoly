@@ -19,14 +19,19 @@ const html = template.replace('<!-- STYLES -->', () => `<style>${css}</style>`)
 // Validate the actual embedded payload, not just the bundler output.
 const embedded = html.slice(html.indexOf('<script>') + 8, html.lastIndexOf('</script>'));
 new Script(embedded, { filename: 'Snapoly.html:inline-script' });
+// Keep credit and complete license notices with standalone and native copies.
+const legalFiles = ['LICENSE', 'ATTRIBUTION.txt', 'THIRD_PARTY_NOTICES.txt'];
+const legalNotices = Object.fromEntries(await Promise.all(legalFiles.map(async name => [name, await readFile(path.join(root, name), 'utf8')])));
+const legalTag = `<script id="snapoly-license-notices" type="application/json">${JSON.stringify(legalNotices).replaceAll('<', '\\u003c')}</script>`;
+const licensedHtml = html.replace('</head>', () => `${legalTag}\n</head>`);
 const tracks=[{title:'Controlled Groove',file:'controlled-groove.mp3'},{title:'Digital Arpeggio',file:'digital-arpeggio.mp3'}];
 const webTracks=tracks.map(t=>({title:t.title,url:`music/${t.file}`}));
 const localTracks=await Promise.all(tracks.map(async t=>({title:t.title,url:'data:audio/mpeg;base64,'+(await readFile(path.join(root,'public/music',t.file))).toString('base64')})));
 const catalog=list=>`<script id="music-catalog" type="application/json">${JSON.stringify(list)}</script>`;
-await writeFile(path.join(root, 'Snapoly.html'), html.replace('<!-- MUSIC -->',()=>catalog(localTracks)));
+await writeFile(path.join(root, 'Snapoly.html'), licensedHtml.replace('<!-- MUSIC -->',()=>catalog(localTracks)));
 await mkdir(path.join(root, 'dist'), { recursive: true });
-await writeFile(path.join(root, 'dist/index.html'), html.replace('<!-- MUSIC -->',()=>catalog(webTracks)));
-await copyFile(path.join(root, 'THIRD_PARTY_NOTICES.txt'), path.join(root, 'dist/THIRD_PARTY_NOTICES.txt'));
+await writeFile(path.join(root, 'dist/index.html'), licensedHtml.replace('<!-- MUSIC -->',()=>catalog(webTracks)));
+for (const name of legalFiles) await copyFile(path.join(root, name), path.join(root, 'dist', name));
 const { cp } = await import('node:fs/promises');
 await cp(path.join(root, 'public'), path.join(root, 'dist'), { recursive:true });
 console.log(`Built Snapoly.html and dist/index.html (${Math.round(Buffer.byteLength(html) / 1024)} KB).`);
